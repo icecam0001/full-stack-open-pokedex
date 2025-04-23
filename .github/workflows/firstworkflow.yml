@@ -1,22 +1,24 @@
 name: hello world!
 on:
   push:
-      branches: 
+    branches: 
       - main
 jobs:
   date_job:
     runs-on: ubuntu-20.04
     steps:
-    - name: date_job
-      run: date
+      - name: Date
+        run: date
   ls_job:
     runs-on: ubuntu-20.04
     steps:
-    - name: LSIT
-      run: ls
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: List files
+        run: ls -l
   hello_job:
     runs-on: ubuntu-20.04
     steps:
-      - name: say_hello    
+      - name: Say hello    
         run: |
           echo "HELLO WORLD"
