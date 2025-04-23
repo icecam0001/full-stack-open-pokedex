@@ -4,10 +4,19 @@ on:
       branches: 
       - main
 jobs:
+  date_job:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: date_job
+      run: date
+  ls_job:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: LSIT
+      run: ls
   hello_job:
     runs-on: ubuntu-20.04
     steps:
       - name: say_hello    
         run: |
           echo "HELLO WORLD"
-          
