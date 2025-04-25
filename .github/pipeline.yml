@@ -26,6 +26,8 @@ jobs:
       run: npm install
     - name: Install Playwright browsers
       run: npx playwright install --with-deps
+    - name: Run Playwright tests with xvfb
+      run: xvfb-run npm run test:e2e:ui
     - name: Build
       run: npm run build
     - name: Run Jest tests
