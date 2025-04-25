@@ -30,7 +30,11 @@ jobs:
     - name: Run Jest tests
       run: npm test
     - name: Install Playwright browsers
-      run: npx playwright install --with-deps
+      run: npx playwright install --with-deps chromium
+    - name: Start server in background
+      run: npm run start &
+    - name: Wait for server to start
+      run: sleep 30  # Give the server time to start up
     - name: Run Playwright tests
       run: npm run test:e2e
   
