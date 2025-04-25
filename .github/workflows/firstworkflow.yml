@@ -1,24 +1,31 @@
-name: hello world!
+name: Pipeline!
 on:
   push:
-    branches: 
+    branches:
       - main
 jobs:
-  date_job:
+  lint_job:
     runs-on: ubuntu-22.04
     steps:
-      - name: Date
-        run: date
-  ls_job:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: lint it
+        run: npm run eslint
+  testinng-job:
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: List files
-        run: ls -l
-  hello_job:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Say hello    
-        run: |
-          echo "HELLO WORLD"
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    - name: Install dependencies
+      run: npm install
+    - name:
+      run: npm run build
+    - name: test it
+      run: npm test
+  
