@@ -1,24 +1,52 @@
-name: Test and Deploy
-
+name: CI/CD Pipeline
 on:
   push:
-    branches: main   # or master, depending on your default branch
+    branches:
+      - main
   pull_request:
-    branches:  main   # or master
+    branches:
+      - main
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  lint:
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: Lint it
+        run: npm run eslint
+
+  test:
+    needs: lint
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Run Jest tests
+        run: npm test
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      - name: Start server in background
+        run: npm run start &
+      - name: Wait for server to start
+        run: sleep 30  # Give the server time to start up
+      - name: Run Playwright tests
+        run: npm run test:e2e
 
   deploy:
-    needs: test  # Only deploy if tests pass
+    needs: [lint, test]  # Only deploy if both lint and test pass
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Deploy to Render
         run: |
