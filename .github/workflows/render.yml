@@ -2,7 +2,8 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [main]
-  pull_request: [open, synchronize]
+  pull_request:
+    types: [opened, synchronize]
     branches: [main]
 
 jobs:
